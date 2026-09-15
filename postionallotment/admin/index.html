@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M-Beat — Admin</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+  @media (max-width: 800px) { .admin-grid { grid-template-columns: 1fr; } }
+  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 4px; padding: 20px; }
+  .panel.wide { grid-column: 1 / -1; }
+  .panel h3 { font-size: 15px; margin-bottom: 4px; }
+  .panel p.hint { font-size: 12px; color: var(--muted); margin: 0 0 14px; }
+  .panel .btn { width: auto; padding: 9px 16px; font-size: 13.5px; }
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 10px; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+  th { color: var(--muted); font-weight: 600; }
+  textarea { width: 100%; min-height: 100px; font-family: monospace; font-size: 12.5px; padding: 8px; border: 1.5px solid var(--line); border-radius: 4px; }
+  .row-flex { display: flex; gap: 10px; }
+  .row-flex .field { flex: 1; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo-strip">
+    <img src="../../assets/mbeat-logo.png" alt="M-Beat" onerror="this.style.display='none'">
+  </div>
+  <div class="brand">
+    <strong>M-Beat Admin</strong>
+    <span>Position Allotment Control Panel · AY 2026–27</span>
+  </div>
+</div>
+
+<div class="shell">
+<div id="loginView" class="login-wrap" style="display:none;">
+    <div class="login-card">
+      <h1>Admin sign in</h1>
+      <p class="sub">Coordination cell access only.</p>
+      <div id="loginError"></div>
+      <div class="field">
+        <label for="adminPass">Admin password</label>
+        <input type="password" id="adminPass" autocomplete="off">
+      </div>
+      <button class="btn" id="adminLoginBtn">Sign in</button>
+    </div>
+  </div>
+
+  <div id="adminMain" style="display:none;">
+    <div class="session-bar">
+      <span>Admin session</span>
+      <span>· expires in <span class="timer" id="sessionTimer">15:00</span></span>
+      <span class="logout-link" id="logoutBtn">Sign out</span>
+    </div>
+
+    <div class="admin-grid">
+
+      <div class="panel">
+        <h3>Selection window</h3>
+        <p class="hint">One shared open/close time for every Tier-2 post.</p>
+        <div class="field"><label>Opens</label><input type="datetime-local" id="openDT"></div>
+        <div class="field"><label>Closes</label><input type="datetime-local" id="closeDT"></div>
+        <button class="btn" id="saveWindowBtn">Save window</button>
+      </div>
+
+      <div class="panel">
+        <h3>Add a single student</h3>
+        <p class="hint">Register them before fixing a post or letting them self-select.</p>
+        <div class="row-flex">
+          <div class="field"><label>Register No.</label><input type="text" id="addRegNo" placeholder="25-UAZ-016"></div>
+          <div class="field"><label>Mobile</label><input type="text" id="addMobile" placeholder="9xxxxxxxxx"></div>
+        </div>
+        <div class="field"><label>Name (optional)</label><input type="text" id="addName"></div>
+        <button class="btn" id="addUserBtn">Add student</button>
+      </div>
+
+      <div class="panel">
+        <h3>Bulk add students</h3>
+        <p class="hint">One per line: registerNumber,mobile,name</p>
+        <textarea id="bulkText" placeholder="25-UAZ-016,9876543210,Student Name
+25-UAZ-017,9876543211,"></textarea>
+        <button class="btn" id="bulkAddBtn" style="margin-top:10px;">Upload list</button>
+      </div>
+
+      <div class="panel">
+        <h3>Fix a Tier-2 post to a student</h3>
+        <p class="hint">Works for Chief/Deputy Zone Leader, any Zone Leader, Planning, Assessment &amp; Action, Documentation, or PR. Leave unfixed and it opens to everyone.</p>
+        <div class="field"><label>Slot ID</label><input type="text" id="fixSlotId" placeholder="ChiefZoneLeader"></div>
+        <div class="field"><label>Register No.</label><input type="text" id="fixRegNo"></div>
+        <div class="row-flex">
+          <button class="btn" id="fixSlotBtn">Fix to this student</button>
+          <button class="btn btn-outline" id="unfixSlotBtn">Remove fix (open to all)</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Change a member's position</h3>
+        <p class="hint">Removes their current lock and optionally places them in a new slot.</p>
+        <div class="field"><label>Register No.</label><input type="text" id="changeRegNo"></div>
+        <div class="field"><label>New Slot ID (leave blank to just remove)</label><input type="text" id="changeSlotId"></div>
+        <button class="btn btn-danger" id="changeMemberBtn">Apply change</button>
+      </div>
+
+      <div class="panel">
+        <h3>Auto-assign after close</h3>
+        <p class="hint">Locks in any reserved post whose person never confirmed themselves, then randomly fills remaining open seats for students with no post.</p>
+        <button class="btn" id="autoAssignBtn">Run auto-assignment</button>
+        <div id="autoAssignResult" style="margin-top:10px;font-size:13px;"></div>
+      </div>
+
+      <div class="panel wide">
+        <h3>Tier-1 Committee (info-only posts)</h3>
+        <p class="hint">Chairperson, Founder &amp; President, Co-founder, Secretary, Joint Secretary, Coordinator, Joint Coordinator, Action &amp; Task Force Secretary, Patrons, Scientific Advisory Committee, Task Force Committee. These are never selected in the portal — just displayed on the public Committee page. If the member is a student with a register number, they'll be blocked from also holding a Tier-2 post.</p>
+        <div class="row-flex">
+          <div class="field">
+            <label>Post</label>
+            <select id="committeePost">
+              <option>Chairperson</option>
+              <option>Founder & President</option>
+              <option>Co-founder</option>
+              <option>Secretary</option>
+              <option>Joint Secretary</option>
+              <option>Coordinator</option>
+              <option>Joint Coordinator</option>
+              <option>Action & Task Force Secretary</option>
+              <option>Patron</option>
+              <option>Scientific Advisory Committee</option>
+              <option>Task Force Committee</option>
+            </select>
+          </div>
+          <div class="field"><label>Member name</label><input type="text" id="committeeName"></div>
+          <div class="field">
+            <label>Type</label>
+            <select id="committeeType"><option>Staff</option><option>Student</option><option>Official</option></select>
+          </div>
+          <div class="field"><label>Register No. (students only)</label><input type="text" id="committeeRegNo"></div>
+        </div>
+        <button class="btn" id="addCommitteeBtn" style="width:auto;">Add to committee</button>
+        <div id="committeeListWrap" style="margin-top:16px;"></div>
+      </div>
+
+      <div class="panel wide">
+        <h3>Roster</h3>
+        <button class="btn btn-outline" id="refreshRosterBtn" style="width:auto;">Refresh</button>
+        <div id="rosterTableWrap"></div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script src="../js/admin.js"></script>
+</body>
+</html>
