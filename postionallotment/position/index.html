@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your position — M-Beat</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo-strip">
+    <img src="../../assets/loyola-logo.png" alt="Loyola College" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'logo-slot',textContent:'LOYOLA'}))">
+    <img src="../../assets/cimser-logo.png" alt="CIMSER" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'logo-slot',textContent:'CIMSER'}))">
+    <img src="../../assets/mbeat-logo.png" alt="M-Beat" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'logo-slot',textContent:'M-BEAT'}))">
+    <img src="../../assets/gcc-logo.png" alt="Greater Chennai Corporation" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'logo-slot',textContent:'GCC'}))">
+  </div>
+  <div class="brand">
+    <strong>M-Beat</strong>
+    <span>Your position · AY 2026–27</span>
+  </div>
+  <nav><a href="../committee/">Committee</a></nav>
+  <div class="clock">
+    <div class="time" id="clockTime">--:--:--</div>
+    <div class="date" id="clockDate">-- --- ----</div>
+  </div>
+</div>
+
+<div class="shell">
+  <div class="session-bar">
+    <span>Signed in as <strong id="meRegNo">—</strong></span>
+    <span>· Session expires in <span class="timer" id="sessionTimer">15:00</span></span>
+    <span class="logout-link" id="logoutBtn">Sign out</span>
+  </div>
+
+  <div id="statusCard" class="status-card" style="display:none;">
+    <span class="badge">Confirmed &amp; Locked</span>
+    <h2 id="statusPosition">—</h2>
+    <div class="zone-line" id="statusZone">—</div>
+    <div class="meta">
+      <div>Locked on<strong id="statusTime">—</strong></div>
+      <div>Method<strong id="statusMethod">—</strong></div>
+    </div>
+  </div>
+
+  <div id="notLockedNotice" style="display:none;">
+    <div class="info-msg">You haven't locked a position yet.</div>
+    <a href="../selection/" class="btn" style="display:inline-flex;width:auto;text-decoration:none;">Go to selection</a>
+  </div>
+
+  <footer class="foot">
+    Centre for Insect Molecular Studies &amp; Environmental Research · PG &amp; Research Dept. of Advanced Zoology &amp; Biotechnology, Loyola College (Autonomous), Chennai — in collaboration with Greater Chennai Corporation
+  </footer>
+</div>
+
+<script src="../js/app.js"></script>
+<script>
+  MBeat.initClock();
+  MBeat.initPositionPage();
+</script>
+</body>
+</html>
