@@ -1,6 +1,6 @@
 /* M-BEAT ADMIN PANEL LOGIC — v2 */
 
-const API_URL = 'PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE'; // same URL as js/app.js
+const API_URL = 'https://script.google.com/macros/s/AKfycby1IVEWpaOcluET3tchQaKhY341oJ4Hg-kanfMevGZoh0-MiJudg2U75Qv9VcNP3XLbnQ/exec'; // same URL as js/app.js
 
 let adminState = { token: null };
 
