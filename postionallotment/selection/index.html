@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Select your position — M-Beat</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo-strip">
+    <img src="../../assets/loyola-logo.png" alt="Loyola College" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'logo-slot',textContent:'LOYOLA'}))">
+    <img src="../../assets/cimser-logo.png" alt="CIMSER" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'logo-slot',textContent:'CIMSER'}))">
+    <img src="../../assets/mbeat-logo.png" alt="M-Beat" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'logo-slot',textContent:'M-BEAT'}))">
+    <img src="../../assets/gcc-logo.png" alt="Greater Chennai Corporation" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'logo-slot',textContent:'GCC'}))">
+  </div>
+  <div class="brand">
+    <strong>M-Beat</strong>
+    <span>Select your position · AY 2026–27</span>
+  </div>
+  <nav><a href="../committee/">Committee</a></nav>
+  <div class="clock">
+    <div class="time" id="clockTime">--:--:--</div>
+    <div class="date" id="clockDate">-- --- ----</div>
+  </div>
+</div>
+
+<div class="shell">
+
+  <div id="windowStrip" class="window-strip">
+    <span class="status-dot"></span>
+    <span class="status-text" id="windowStatusText">Checking selection window…</span>
+    <span class="window-times" id="windowTimes"></span>
+  </div>
+
+  <div class="session-bar">
+    <span>Signed in as <strong id="meRegNo">—</strong></span>
+    <span>· Session expires in <span class="timer" id="sessionTimer">15:00</span></span>
+    <span class="logout-link" id="logoutBtn">Sign out</span>
+  </div>
+
+  <div class="map-section">
+    <img src="../../assets/college-map.png" alt="Loyola College zone map" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'map-placeholder',textContent:'College map — add college-map.png'}))">
+    <div class="map-caption">
+      <h3>Zone map</h3>
+      <p>Loyola College campus divided into 9 M-Beat zones. Check the zone card below for exact coverage before selecting.</p>
+    </div>
+  </div>
+
+  <div class="section-head"><h2>Who does what</h2></div>
+  <div class="role-info-grid" id="roleInfoGrid"></div>
+
+  <div id="reservedNotice"></div>
+
+  <div class="section-head">
+    <h2>College-wide Leadership</h2>
+    <span class="hint">Live · updates automatically</span>
+  </div>
+  <div class="zone-grid" id="leadershipGrid"></div>
+
+  <div class="section-head"><h2>Zone Positions</h2></div>
+  <div class="zone-grid" id="zoneGrid"></div>
+
+  <div class="section-head"><h2>Public Relations Team</h2></div>
+  <div class="zone-grid" id="prGrid"></div>
+
+  <footer class="foot">
+    Centre for Insect Molecular Studies &amp; Environmental Research · PG &amp; Research Dept. of Advanced Zoology &amp; Biotechnology, Loyola College (Autonomous), Chennai — in collaboration with Greater Chennai Corporation
+  </footer>
+</div>
+
+<div class="modal-overlay" id="confirmModal" style="display:none;">
+  <div class="modal-box">
+    <h3 id="modalTitle">Confirm your position</h3>
+    <p id="modalPosition">—</p>
+    <p id="modalZone" style="color:var(--muted);"></p>
+    <p class="warn">Once confirmed, this position is locked permanently and cannot be changed by you. Make sure this is your final choice.</p>
+    <div class="modal-actions">
+      <button class="btn btn-outline" id="modalCancel">Cancel</button>
+      <button class="btn" id="modalStep1Confirm">Yes, continue</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="finalModal" style="display:none;">
+  <div class="modal-box">
+    <h3>Final confirmation</h3>
+    <p>This is your last chance to back out. Locking is <strong>permanent</strong>.</p>
+    <p class="warn">Type LOCK below to confirm.</p>
+    <input type="text" id="lockPhrase" style="width:100%;padding:10px;border:1.5px solid var(--line);border-radius:4px;margin-bottom:16px;" placeholder="Type LOCK">
+    <div class="modal-actions">
+      <button class="btn btn-outline" id="finalCancel">Cancel</button>
+      <button class="btn btn-danger" id="finalConfirm" disabled>Lock my position</button>
+    </div>
+  </div>
+</div>
+
+<script src="../js/app.js"></script>
+<script>
+  MBeat.initClock();
+  MBeat.initSelectionPage();
+</script>
+</body>
+</html>
